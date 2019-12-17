@@ -57,7 +57,9 @@ class HeasarcClass(BaseQuery):
             cache=cache
         )
         data = BytesIO(response.content)
-        table = Table.read(data, format='ascii.fixed_width_two_line',
+        data_str = data.read().decode('utf-8')
+        data_str = data_str.replace('Table xxx does not seem to exist!\n\n\n\nAvailable tables:\n', '')
+        table = Table.read(data_str, format='ascii.fixed_width_two_line',
                            delimiter='+', header_start=1, position_line=2,
                            data_start=3, data_end=-1)
         return table
